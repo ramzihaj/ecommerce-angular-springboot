@@ -1,0 +1,18 @@
+.modal-container {
+  position: fixed;
+  top: 64px; /* Height of the navbar (h-16 in Tailwind is 64px) */
+  left: 0;
+  right: 0;
+  background-color: transparent; /* Transparent background */
+  z-index: 40; /* Below navbar z-50 but above other content */
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  width: 100%; /* Ensure full width across all screen sizes */
+}
+
+.nav-content {
+  width: 100%; /* Full width */
+  max-width: 1200px; /* Optional: Limit max width for larger screens, adjust as needed */
+  padding: 0 1rem; /* Add padding to match the image layout */
+}

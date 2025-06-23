@@ -1,0 +1,58 @@
+<div class="fixed top-0 z-50 right-0 left-0 bg-[#69f0ae] text-gray-800  ">
+
+  <div class="px-5 lg:px-20 h-16 flex items-center justify-between">
+
+    <div class="flex items-center">
+      <div class="mr-5">
+        <img class="w-8" src="https://cdn.pixabay.com/photo/2021/02/18/11/01/icon-6026833_640.png" alt="Shoppy">
+      </div>
+
+      <div class="">
+        <div class="flex items-center space-x-4">
+          <a routerLink="/" class="text-gary-800 font-semiblod text-lg">
+            Shoppy
+          </a>
+          <div>
+            <button class="open-button" (click)="openNavbarContent('men')" mat-button>Men</button>
+          </div>
+
+          <div>
+            <button class="open-button" (click)="openNavbarContent('women')" mat-button>Women</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center">
+
+      <button mat-icon-button (click)="navigateTo('cart')">
+        <mat-icon>shopping_cart</mat-icon>
+      </button>
+
+      <button *ngIf="false" mat-raised-button type="" color="#69f0ae">
+        LOGIN
+      </button>
+      <div *ngIf="true" class="relative ml-3 flex items-center">
+        <div class="flex items-center space-x-5">
+          <span class="font-bold text-lg">account</span>
+          <button mat-button [matMenuTriggerFor]="profileMenu">
+            <img class="h-5 w-5" src="https://cdn.pixabay.com/photo/2017/02/25/22/04/user-icon-2098873_960_720.png" alt="user">
+          </button>
+          <mat-menu #profileMenu="matMenu">
+            <button mat-menu-item>Orders</button>
+            <button mat-menu-item>Profile</button>
+            <button mat-menu-item>Logout</button>
+          </mat-menu>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div *ngIf="isNavbarContentOpen" class="absolute right-0 left-0 modal-container">
+
+  <app-nav-content [selectedSection] = "currentSection"/>
+
+</div>
+
+</div>
+

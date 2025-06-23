@@ -1,0 +1,21 @@
+/* TailwindCSS directives (must come first) */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global CSS styles */
+body {
+  margin: 0;
+  font-family: "Times New Roman", Times, serif;
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+}
+
+.box {
+  box-shadow: #000000 0px 5px 15px;
+  padding: 15px;
+}
+
+.hideScrollbar::-webkit-scrollbar {
+  display: none;
+}
