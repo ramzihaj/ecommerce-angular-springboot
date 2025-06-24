@@ -26,11 +26,11 @@ export class HomeComponent {
   filletteRobe: any
   garconPantalon: any
   ngOnInit() {
-    this.femmeRobe = femmeRobe.slice(0, 5)
-    this.femmeShoes = femmeShoes.slice(0, 5)
-    this.hommeDenim = hommeDenim.slice(0, 5)
-    this.hommePantalon = hommePantalon.slice(0, 5)
-    this.filletteRobe = filletteRobe.slice(0, 5)
-    this.garconPantalon=garconPantalon.slice(0,5)
+    this.femmeRobe = femmeRobe.slice(0, 4)
+    this.femmeShoes = femmeShoes.slice(0, 4)
+    this.hommeDenim = hommeDenim.slice(0, 4)
+    this.hommePantalon = hommePantalon.slice(0, 4)
+    this.filletteRobe = filletteRobe.slice(0, 4)
+    this.garconPantalon=garconPantalon.slice(0,4)
   }
 }

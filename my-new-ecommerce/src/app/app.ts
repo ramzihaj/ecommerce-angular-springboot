@@ -10,7 +10,7 @@ import { Products } from './module/feture/components/products/products';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [NavbarComponent,Footer,Products],
+  imports: [NavbarComponent, Footer,RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
