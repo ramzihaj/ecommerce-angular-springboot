@@ -1,1 +1,149 @@
-<p class="py-10">product-details works!</p>
+<div class="p-5 lg:p-10 mt-10">
+  <p class="text-gray-500 py-10">product/clothes/women/dresses</p>
+  <div class="lg:grid grid-cols-3 lg:gap-10">
+    <div class="col-span-2 flex items-center flex-col">
+      <img
+        src="https://i5.walmartimages.com/asr/a4226ff5-42ca-499a-ad75-506a4afaf938.fe6d76715b4d46bc4ae68997defd8c7e.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF"
+        alt="">
+    </div>
+    <div class="col-span-1 space-y-10 mt-10 lg:mt-0">
+      <div class="space-y-2">
+        <p class="font-semibold text-gray-600 text-lg">Nofilter</p>
+        <p class="text-xl">Beautiful summer dresses for ladies outlet</p>
+      </div>
+      <div class="flex items-center space-x-5">
+        <p class="text-lg">TND 180</p>
+        <p class="text-lg text-gray-700 line-through">TND 490</p>
+        <p class="text-green-400 font-semibold text-lg">60%</p>
+      </div>
+      <div>
+        <p class="text-lg font-semibold">size</p>
+        <mat-radio-group class="space-x-5" aria-label="Select an option" [(ngModel)]="SelectedSize">
+          <mat-radio-button value="S"><span>S</span></mat-radio-button>
+          <mat-radio-button value="M"><span>M</span></mat-radio-button>
+          <mat-radio-button value="L"><span>L</span></mat-radio-button>
+          <mat-radio-button value="XL"><span>XL</span></mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div>
+        <button color="accent" style="padding: 1.5rem;" class="w-full custom-green-button" (click)="handleAddToCart()"
+          mat-raised-button>
+          Add To Cart
+        </button>
+      </div>
+      <div>
+        <p class="text-gray-600">
+          Dress to impress in our 'Velouria' dress, a quintessential ensemble for spring and summer festivities. This
+          charming piece is fashioned from glace cotton and presents a captivating floral print.
+        </p>
+        <p class="text-gray-600">
+          Our products are shot professionally under controlled lighting. Colours tend to be perceived differently
+          depending on factors such as shot angles, lighting, background tones and colour temperatures. As a result,
+          prints and colours may vary.
+        </p>
+      </div>
+    </div>
+  </div>
+  <section class="pt-20 pb-10 px-5 lg:px-20">
+    <h1 class="font-semibold text-lg pb-4">Recent Review & Ratings</h1>
+    <div class="border border-[#1a1a1a] rounded-md p-5">
+      <div class="lg:grid grid-cols-12 gap-7">
+        <div class="col-span-7">
+          <div class="space-y-5">
+            <div *ngFor="let item of reviews">
+              <app-product-review-card />
+            </div>
+          </div>
+        </div>
+        <div class="col-span-5 mt-10 lg:mt-0">
+          <div class="box">
+            <h1 class="text-xl font-semibold pb-1">
+              Product Ratings
+            </h1>
+            <div class="flex items-center space-x-3 pb-10">
+              <app-star-rating/>
+              <p class="opacity-60">45764 Ratings</p>
+            </div>
+            <div class="space-y-3">
+              <div>
+                <div class="grid grid-cols-12 justify-around items-center">
+                  <div class="col-span-2">
+                    <span>Excellent</span>
+                  </div>
+                  <div class="col-span-8 px-4">
+                    <mat-progress-bar mode="determinate" value="60"></mat-progress-bar>
+                  </div>
+                  <div class="col-span-2">
+                    <span class="opacity-50">12849</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="grid grid-cols-12 justify-around items-center">
+                  <div class="col-span-2">
+                    <span>Very Good</span>
+                  </div>
+                  <div class="col-span-8 px-4">
+                    <mat-progress-bar mode="determinate" value="30"></mat-progress-bar>
+                  </div>
+                  <div class="col-span-2">
+                    <span class="opacity-50">1245</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="grid grid-cols-12 justify-around items-center">
+                  <div class="col-span-2">
+                    <span>Good</span>
+                  </div>
+                  <div class="col-span-8 px-4">
+                    <mat-progress-bar mode="determinate" value="20"></mat-progress-bar>
+                  </div>
+                  <div class="col-span-2">
+                    <span class="opacity-50">901</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="grid grid-cols-12 justify-around items-center">
+                  <div class="col-span-2">
+                    <span>Average</span>
+                  </div>
+                  <div class="col-span-8 px-4">
+                    <mat-progress-bar mode="determinate" value="15"></mat-progress-bar>
+                  </div>
+                  <div class="col-span-2">
+                    <span class="opacity-50">832</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="grid grid-cols-12 justify-around items-center">
+                  <div class="col-span-2">
+                    <span>Poor</span>
+                  </div>
+                  <div class="col-span-8 px-4">
+                    <mat-progress-bar mode="determinate" value="5"></mat-progress-bar>
+                  </div>
+                  <div class="col-span-2">
+                    <span class="opacity-50">67</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="mt-10">
+    <h1 class="py-5 text-gray-400">Related Products</h1>
+    <div class="flex justify-around flex-wrap">
+      <div *ngFor="let item of relatedProducts">
+        <div>
+          <app-product-card [product]="item" />
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

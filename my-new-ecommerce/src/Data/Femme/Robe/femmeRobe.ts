@@ -84,7 +84,7 @@ export const femmeRobe = [
     "description": "Chic wrap dress with a matching belt, perfect for any occasion."
   },
   {
-    "imageUrl": "https://www.asos.com/asos-design/asos-design-maxi-dress-with-ruched-bust-in-black/prd/203571981?colourWayId=60325837&cid=8803",
+    "imageUrl": "https://images.asos-media.com/products/asos-design-satin-chiffon-mix-draped-one-shoulder-maxi-dress-in-dark-green/208426921-1-lightolive/?$n_480w$&wid=476&fit=constrain",
     "brand": "ASOS",
     "title": "Maxi Dress with Ruched Bust",
     "color": "Black",
@@ -105,7 +105,7 @@ export const femmeRobe = [
     "description": "Elegant maxi dress with ruched bust detail for a flattering fit."
   },
   {
-    "imageUrl": "https://www.forever21.com/dw/image/v2/BGVR_PRD/on/demandware.static/-/Sites-f21-master-catalog/default/dw8e7b37e9/products/2000319630/2000319630-1.jpg?sw=1000&sh=1000&sm=fit",
+    "imageUrl": "https://assets.myntassets.com/w_412,q_60,dpr_2,fl_progressive/assets/images/1322269/2016/5/13/11463132567091-FOREVER-21-Women-Dresses-1021463132566864-1.jpg",
     "brand": "Forever 21",
     "title": "Bohemian Sundress",
     "color": "Mustard Yellow",
@@ -126,7 +126,7 @@ export const femmeRobe = [
     "description": "Flowy bohemian sundress with a vibrant mustard yellow hue."
   },
   {
-    "imageUrl": "https://www.topshop.com/dw/image/v2/ABAU_PRD/on/demandware.static/-/Sites-topshop-uk-master/default/dw9e8f3f2e/products/TSH3150S-01W/TSH3150S-01W-1.jpg",
+    "imageUrl": "https://images.asos-media.com/products/tfnc-plus-satin-kimono-top-maxi-dress-in-emerald-green/207064196-1-emeraldgreen/?$n_480w$&wid=476&fit=constrain",
     "brand": "Topshop",
     "title": "Satin Slip Dress",
     "color": "Emerald Green",
@@ -147,7 +147,7 @@ export const femmeRobe = [
     "description": "Luxurious satin slip dress with a rich emerald green finish."
   },
   {
-    "imageUrl": "https://www.primark.com/dw/image/v2/BGVR_PRD/on/demandware.static/-/Sites-primark-eu-catalog/default/dw8e7b37e9/products/80009463/80009463-1.jpg?sw=1000&sh=1000&sm=fit",
+    "imageUrl": "https://i.ebayimg.com/thumbs/images/g/JSIAAeSwcTloRtGA/s-l1200.jpg",
     "brand": "Primark",
     "title": "Floral Mini Dress",
     "color": "Pink",
@@ -168,7 +168,7 @@ export const femmeRobe = [
     "description": "Affordable floral mini dress perfect for casual outings."
   },
   {
-    "imageUrl": "https://www.dorothyperkins.com/dw/image/v2/ABAU_PRD/on/demandware.static/-/Sites-dorothyperkins-uk-master/default/dw6f7e3f2e/products/DP154/DP154-1.jpg?sw=1000&sh=1000&sm=fit",
+    "imageUrl": "https://i.ebayimg.com/thumbs/images/g/sAcAAOSwfZBnHrdf/s-l1200.jpg",
     "brand": "Dorothy Perkins",
     "title": "Lace Midi Dress",
     "color": "Ivory",
@@ -189,7 +189,7 @@ export const femmeRobe = [
     "description": "Delicate lace midi dress suitable for weddings and events."
   },
   {
-    "imageUrl": "https://www.gap.com/webcontent/0057/055/592/cn57055592.jpg",
+    "imageUrl": "https://www.picclickimg.com/XagAAOSwGJpnvNMU/JOANNA-HOPE-EMBROIDERED-LACE-FLORAL-EVENING-OCCASION-PARTY.webp",
     "brand": "Gap",
     "title": "Cotton A-Line Dress",
     "color": "Sage Green",
