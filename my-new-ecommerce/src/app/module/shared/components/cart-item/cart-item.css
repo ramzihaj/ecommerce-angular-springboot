@@ -1,0 +1,103 @@
+/* Container styling */
+.shadow-lg {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover effect for the container */
+.shadow-lg:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Image and layout */
+.w-5rem,
+.w-9rem {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.w-5rem:hover,
+.w-9rem:hover {
+  transform: scale(1.05);
+}
+
+.w-5rem {
+  width: 5rem;
+  height: 5rem;
+}
+
+.w-9rem {
+  width: 9rem;
+  height: 9rem;
+}
+
+/* Text styling */
+.font-semibold {
+  font-size: 1.25rem;
+  color: #1f2937;
+}
+
+.text-gray-500 {
+  font-size: 0.875rem;
+}
+
+.text-xl {
+  font-size: 1.5rem;
+  color: #111827;
+}
+
+.text-green-600 {
+  font-weight: 600;
+}
+
+/* Quantity controls */
+button[mat-mini-fab] {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #10b981;
+  color: white;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+button[mat-mini-fab]:hover {
+  background-color: #047857;
+  transform: scale(1.1);
+}
+
+button[mat-mini-fab][disabled] {
+  background-color: #a3bffa;
+  cursor: not-allowed;
+}
+
+span.py-2 {
+  min-width: 3rem;
+  text-align: center;
+}
+
+button[mat-stroked-button] {
+  padding: 0.25rem 1rem;
+  font-size: 0.875rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button[mat-stroked-button]:hover {
+  background-color: #fee2e2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .flex-col {
+    flex-direction: column;
+  }
+  .w-5rem,
+  .w-9rem {
+    width: 5rem;
+    height: 5rem;
+  }
+  .ml-5 {
+    margin-left: 0;
+    margin-top: 1rem;
+  }
+}
