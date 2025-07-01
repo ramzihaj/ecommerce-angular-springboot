@@ -1,0 +1,50 @@
+/* Container styling */
+.box {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.box:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Text styling */
+.text-gray-800 {
+  color: #1f2937;
+}
+
+.text-gray-500,
+.text-gray-600 {
+  color: #6b7280;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+/* Checkbox styling */
+mat-checkbox {
+  width: 100%;
+}
+
+mat-checkbox .mat-checkbox-frame {
+  border-color: #d1d5db;
+}
+
+mat-checkbox .mat-checkbox-checked .mat-checkbox-frame {
+  border-color: #10b981;
+  background-color: #10b981;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .lg:grid-cols-4 {
+    grid-template-columns: 1fr;
+  }
+  .col-span-1,
+  .col-span-3 {
+    grid-column: span 1;
+  }
+}

@@ -1,1 +1,24 @@
-<p class="py-10">order works!</p>
+<div class="py-20 text-black px-5 lg:px-20">
+  <h1 class="text-2xl font-bold text-center py-10 text-gray-800">My Orders</h1>
+  <div class="lg:grid grid-cols-4 gap-6">
+    <div class="col-span-1">
+      <div class="rounded-lg shadow-md p-5 bg-white transition-all duration-300 hover:shadow-lg">
+        <div *ngFor="let option of orderFilter">
+          <div class="flex items-center py-2">
+            <mat-checkbox [id]="option.value" [value]="option.value" >
+              <span class="text-sm text-gray-600">{{ option.label }}</span>
+            </mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-span-3 space-y-6">
+      <div class="space-y-5" *ngFor="let item of orders; let i = index">
+        <div class="cursor-pointer" (click)="navigateToOrderDetails(i)" *ngFor="let orderItem of item; let j = index"> <!-- Changed to use index i -->
+          <app-order-card [order]="orderItem" />
+        </div>
+        <mat-divider *ngIf="i < orders.length - 1" class="my-6 border-gray-200"></mat-divider>
+      </div>
+    </div>
+  </div>
+</div>

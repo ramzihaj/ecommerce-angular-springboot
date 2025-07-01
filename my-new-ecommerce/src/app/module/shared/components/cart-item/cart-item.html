@@ -12,7 +12,7 @@
         <p class="font-semibold text-xl text-gray-900">TND 44.99</p>
         <span class="text-green-600 font-semibold text-sm bg-green-100 px-2 py-1 rounded-full">60% off</span>
       </div>
-      <div class="flex items-center justify-between pt-4">
+      <div *ngIf="showButton" class="flex items-center justify-between pt-4">
         <div class="flex items-center gap-3">
           <button mat-mini-fab color="accent" (click)="updateCartItem(-1)" [disabled]="quantity === 1" class="transition-transform hover:scale-105">
             <mat-icon>remove</mat-icon>

@@ -4,6 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
 import { NgIf } from '@angular/common';
 import { NavContentComponent } from './nav-content/nav-content.component';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -15,7 +17,10 @@ export class NavbarComponent {
 
 
   isNavbarContentOpen:any
-  currentSection:any
+  currentSection: any
+
+  constructor(private router:Router){}
+
   openNavbarContent(section:any) {
     this.isNavbarContentOpen = true;
     this.currentSection = section;
@@ -25,7 +30,7 @@ export class NavbarComponent {
     this.isNavbarContentOpen = false;
   }
   navigateTo(path:any) {
-
+    this.router.navigate([path])
   }
   @HostListener('document:click',['$event'])
   onDocumentClick(event: MouseEvent) {
