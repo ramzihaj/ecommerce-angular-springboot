@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: product-service
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ecommerce_products
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 60000ms
+  
+  cache:
+    type: redis
+    redis:
+      time-to-live: 600000
+
+server:
+  port: 8082
+  servlet:
+    context-path: /
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+
+logging:
+  level:
+    com.ecommerce: DEBUG
