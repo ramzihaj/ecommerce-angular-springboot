@@ -59,66 +59,89 @@ Modern, scalable e-commerce platform built with **Spring Boot 3** microservices 
 
 ### Prerequisites
 
-**Backend:**
-- Java 21
-- Maven 3.8+
-- PostgreSQL 15+
-- Redis 7+
+**Required:**
+- ✅ **Docker Desktop** - Must be installed and running
+- ✅ **Java 21** - JDK 21 or higher
+- ✅ **Maven 3.8+** - For building backend services
+- ✅ **Node.js 18+** - For frontend development
+- ✅ **npm 9+** - Node package manager
 
-**Frontend:**
-- Node.js 18+
-- npm 9+
-- Angular CLI 18+
+**Installation Links:**
+- Docker Desktop: https://www.docker.com/products/docker-desktop
+- Java 21: https://adoptium.net/
+- Maven: https://maven.apache.org/download.cgi
+- Node.js: https://nodejs.org/
 
-### 1. Start Infrastructure (Docker)
+### Windows Setup (Automated)
+
+**⚡ Option 1: Complete Setup (Recommended)**
+1. Make sure Docker Desktop is running
+2. Run `SETUP.bat` - This will:
+   - Check all prerequisites
+   - Start Docker infrastructure (PostgreSQL, Redis, pgAdmin)
+   - Create databases
+   - Build backend services
+   - Load test data
+
+**⚡ Option 2: Start Services**
+1. After setup, run `START_SERVICES.bat` to start all microservices
+2. Services will open in separate windows
+
+### Manual Setup
+
+#### 1. Start Infrastructure (Docker)
 
 ```bash
+# Make sure Docker Desktop is running first!
 cd ecommerce-backend
 docker-compose up -d
 ```
 
 This starts:
-- PostgreSQL (port 5432)
+- PostgreSQL (port 5432) - username: postgres, password: postgres
 - Redis (port 6379)
-- pgAdmin (port 5050)
+- pgAdmin (port 5050) - email: admin@ecommerce.com, password: admin
 
-### 2. Start Backend Services
+#### 2. Create Databases
+
+```bash
+docker exec ecommerce-postgres psql -U postgres -c "CREATE DATABASE ecommerce_users;"
+docker exec ecommerce-postgres psql -U postgres -c "CREATE DATABASE ecommerce_products;"
+docker exec ecommerce-postgres psql -U postgres -c "CREATE DATABASE ecommerce_orders;"
+docker exec ecommerce-postgres psql -U postgres -c "CREATE DATABASE ecommerce_payments;"
+```
+
+#### 3. Build Backend Services
 
 ```bash
 cd ecommerce-backend
-
-# Build all modules
-mvn clean install
-
-# Start Gateway
-cd gateway && mvn spring-boot:run &
-
-# Start User Service
-cd user-service && mvn spring-boot:run &
-
-# Start Product Service
-cd product-service && mvn spring-boot:run &
-
-# Start Order Service
-cd order-service && mvn spring-boot:run &
-
-# Start Notification Service
-cd notification-service && mvn spring-boot:run &
+mvn clean install -DskipTests
 ```
 
-**Services:**
+#### 4. Start Backend Services
+
+```bash
+# Start each service in a separate terminal
+cd gateway && mvn spring-boot:run
+cd user-service && mvn spring-boot:run
+cd product-service && mvn spring-boot:run
+cd order-service && mvn spring-boot:run
+cd payment-service && mvn spring-boot:run
+```
+
+**Service Endpoints:**
 - Gateway: `http://localhost:8080`
 - User Service: `http://localhost:8081`
 - Product Service: `http://localhost:8082`
 - Order Service: `http://localhost:8083`
-- Notification Service: `http://localhost:8085`
+- Payment Service: `http://localhost:8084`
 
-### 3. Start Frontend
+#### 5. Start Frontend
 
 ```bash
 cd modern-ecommerce-frontend
 
-# Install dependencies
+# Install dependencies (first time only)
 npm install
 
 # Start development server
@@ -126,6 +149,18 @@ npm start
 ```
 
 Frontend: `http://localhost:4200`
+
+### 🧪 Test Data
+
+Test credentials (if test data loaded):
+- **Admin**: admin@ecommerce.com / test123
+- **User 1**: john.doe@example.com / test123
+- **User 2**: jane.smith@example.com / test123
+
+Test data includes:
+- 4 users (1 admin, 3 customers)
+- 11 products across different categories
+- 3 sample orders
 
 ## 📚 Documentation
 
