@@ -12,10 +12,19 @@ Ce guide vous permet de tester le frontend **sans avoir besoin du backend**, ave
 START_FRONTEND_DEMO.bat
 ```
 
-Puis dans le navigateur (une fois ouvert):
-1. Appuyez sur **F12** pour ouvrir la console
-2. Tapez: `localStorage.setItem('useMocks', 'true')`
-3. Appuyez sur **F5** pour recharger
+Ou simplement:
+```bash
+cd modern-ecommerce-frontend
+npm start
+```
+
+**Le mode démo est activé par défaut!** Les produits s'affichent automatiquement.
+
+Pour désactiver le mode démo (et utiliser le vrai backend):
+```javascript
+localStorage.setItem('useMocks', 'false')
+location.reload()
+```
 
 ---
 

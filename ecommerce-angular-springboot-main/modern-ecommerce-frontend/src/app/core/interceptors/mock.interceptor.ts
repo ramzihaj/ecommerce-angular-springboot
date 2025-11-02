@@ -3,10 +3,15 @@ import { of, delay } from 'rxjs';
 import { MOCK_PRODUCTS, MOCK_USERS, MOCK_CART, MOCK_ORDERS } from '../mocks/mock-data';
 
 export const mockInterceptor: HttpInterceptorFn = (req, next) => {
-  // Check if mock mode is enabled
-  const useMocks = localStorage.getItem('useMocks') === 'true';
+  // Check if mock mode is enabled (default to true if not set)
+  let useMocks = localStorage.getItem('useMocks');
+  if (useMocks === null) {
+    // Enable mocks by default on first load
+    localStorage.setItem('useMocks', 'true');
+    useMocks = 'true';
+  }
   
-  if (!useMocks) {
+  if (useMocks !== 'true') {
     return next(req);
   }
 
@@ -20,16 +25,32 @@ export const mockInterceptor: HttpInterceptorFn = (req, next) => {
   if (url.includes('/api/products') && req.method === 'GET') {
     if (url.includes('/featured')) {
       const featuredProducts = MOCK_PRODUCTS.filter(p => p.featured);
-      return of(new HttpResponse({ status: 200, body: featuredProducts })).pipe(delay(simulateDelay));
+      return of(new HttpResponse({ 
+        status: 200, 
+        body: { data: featuredProducts }
+      })).pipe(delay(simulateDelay));
     }
     
     if (url.match(/\/api\/products\/\d+$/)) {
       const id = parseInt(url.split('/').pop() || '0');
       const product = MOCK_PRODUCTS.find(p => p.id === id);
-      return of(new HttpResponse({ status: 200, body: product })).pipe(delay(simulateDelay));
+      return of(new HttpResponse({ 
+        status: 200, 
+        body: { data: product }
+      })).pipe(delay(simulateDelay));
     }
     
-    return of(new HttpResponse({ status: 200, body: MOCK_PRODUCTS })).pipe(delay(simulateDelay));
+    return of(new HttpResponse({ 
+      status: 200, 
+      body: { 
+        data: {
+          content: MOCK_PRODUCTS,
+          totalPages: 1,
+          pageNumber: 0,
+          totalElements: MOCK_PRODUCTS.length
+        }
+      }
+    })).pipe(delay(simulateDelay));
   }
 
   // Cart endpoints
