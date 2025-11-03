@@ -9,11 +9,31 @@ export const selectCartItems = createSelector(
 );
 
 export const selectCartTotal = createSelector(
-  selectCartItems,
-  (items) => items.reduce((total, item) => total + (item.price * item.quantity), 0)
+  selectCartState,
+  (state: CartState) => state.total
 );
 
 export const selectCartItemCount = createSelector(
+  selectCartState,
+  (state: CartState) => state.totalItems
+);
+
+export const selectCartLoading = createSelector(
+  selectCartState,
+  (state: CartState) => state.loading
+);
+
+export const selectCartError = createSelector(
+  selectCartState,
+  (state: CartState) => state.error
+);
+
+export const selectIsInCart = (productId: number) => createSelector(
   selectCartItems,
-  (items) => items.reduce((count, item) => count + item.quantity, 0)
+  (items) => items.some(item => item.product.id === productId)
+);
+
+export const selectCartItemQuantity = (productId: number) => createSelector(
+  selectCartItems,
+  (items) => items.find(item => item.product.id === productId)?.quantity || 0
 );

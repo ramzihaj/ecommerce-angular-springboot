@@ -1,10 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
 import * as ProductActions from '../actions/product.actions';
+import { TunisiaProduct } from '../../shared/models/tunisia-product.model';
 
 export interface ProductState {
-  products: any[];
-  selectedProduct: any | null;
-  featuredProducts: any[];
+  products: TunisiaProduct[];
+  selectedProduct: TunisiaProduct | null;
+  featuredProducts: TunisiaProduct[];
   loading: boolean;
   error: string | null;
   totalPages: number;

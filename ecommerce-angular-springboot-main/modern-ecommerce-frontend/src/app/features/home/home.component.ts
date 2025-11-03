@@ -6,11 +6,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { Store } from '@ngrx/store';
 import { loadFeaturedProducts } from '../../store/actions/product.actions';
 import { selectFeaturedProducts } from '../../store/selectors/product.selectors';
+import { addToCart } from '../../store/actions/cart.actions';
+import { toggleWishlist } from '../../store/actions/wishlist.actions';
+import { TndCurrencyPipe } from '../../shared/pipes/tnd-currency.pipe';
+import { TunisiaService } from '../../shared/services/tunisia.service';
+import { ProductGridComponent } from '../../shared/components/product-grid/product-grid.component';
+import { TunisiaProduct } from '../../shared/models/tunisia-product.model';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, RouterModule, MatIconModule, MatButtonModule, TndCurrencyPipe, ProductGridComponent],
   template: `
     <!-- Hero Section -->
     <section class="relative min-h-[90vh] flex items-center hero-pattern overflow-hidden">
@@ -21,13 +27,13 @@ import { selectFeaturedProducts } from '../../store/selectors/product.selectors'
           <!-- Hero Content -->
           <div class="animate-slide-right">
             <span class="inline-block px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-semibold mb-6">
-              ✨ Collection 2024
+              🇹🇳 Made in Tunisia - Collection 2024
             </span>
             <h1 class="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-neutral-900 dark:text-white mb-6 leading-tight">
-              Mobilier <span class="text-gradient">Moderne</span> Pour Votre Maison
+              Mobilier <span class="text-gradient">Tunisien</span> Pour Votre Maison
             </h1>
             <p class="text-xl text-neutral-600 dark:text-neutral-300 mb-8 max-w-xl">
-              Découvrez notre collection exclusive de meubles design qui allient confort, élégance et durabilité pour transformer votre espace de vie.
+              Découvrez notre collection exclusive de meubles design tunisiens qui allient confort, élégance et qualité artisanale pour transformer votre espace de vie.
             </p>
             <div class="flex flex-wrap gap-4">
               <a routerLink="/products" class="btn-primary">
@@ -43,16 +49,16 @@ import { selectFeaturedProducts } from '../../store/selectors/product.selectors'
             <!-- Stats -->
             <div class="grid grid-cols-3 gap-6 mt-12 pt-12 border-t border-neutral-200 dark:border-neutral-700">
               <div>
-                <div class="text-3xl font-bold text-gradient mb-1">500+</div>
+                <div class="text-3xl font-bold text-gradient mb-1">200+</div>
                 <div class="text-sm text-neutral-600 dark:text-neutral-400">Produits</div>
               </div>
               <div>
-                <div class="text-3xl font-bold text-gradient mb-1">10k+</div>
-                <div class="text-sm text-neutral-600 dark:text-neutral-400">Clients Satisfaits</div>
+                <div class="text-3xl font-bold text-gradient mb-1">5k+</div>
+                <div class="text-sm text-neutral-600 dark:text-neutral-400">Clients TN</div>
               </div>
               <div>
-                <div class="text-3xl font-bold text-gradient mb-1">98%</div>
-                <div class="text-sm text-neutral-600 dark:text-neutral-400">Satisfaction</div>
+                <div class="text-3xl font-bold text-gradient mb-1">24</div>
+                <div class="text-sm text-neutral-600 dark:text-neutral-400">Gouvernorats</div>
               </div>
             </div>
           </div>
@@ -74,7 +80,7 @@ import { selectFeaturedProducts } from '../../store/selectors/product.selectors'
                 </div>
                 <div>
                   <div class="font-bold text-neutral-900 dark:text-white">Livraison Gratuite</div>
-                  <div class="text-xs text-neutral-500">Partout en France</div>
+                  <div class="text-xs text-neutral-500">> 200 TND</div>
                 </div>
               </div>
             </div>
@@ -137,55 +143,16 @@ import { selectFeaturedProducts } from '../../store/selectors/product.selectors'
     <!-- Featured Products Section -->
     <section class="section-padding gradient-bg-subtle">
       <div class="container-custom">
-        <div class="text-center mb-16">
-          <h2 class="text-4xl md:text-5xl font-display font-bold text-neutral-900 dark:text-white mb-4">
-            Produits en Vedette
-          </h2>
-          <p class="text-xl text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto">
-            Découvrez nos meubles les plus populaires, sélectionnés avec soin pour vous
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          @for (product of featuredProducts$ | async; track product.id) {
-            <div class="card-elegant card-hover group cursor-pointer">
-              <div class="relative overflow-hidden">
-                <div class="aspect-square bg-gradient-to-br from-neutral-100 to-neutral-200 dark:from-neutral-800 dark:to-neutral-700"></div>
-                <span class="absolute top-4 right-4 badge badge-primary">Nouveau</span>
-                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                  <button class="w-12 h-12 rounded-full bg-white text-neutral-900 flex items-center justify-center hover:scale-110 transition-transform">
-                    <mat-icon>favorite_border</mat-icon>
-                  </button>
-                  <button class="w-12 h-12 rounded-full bg-white text-neutral-900 flex items-center justify-center hover:scale-110 transition-transform">
-                    <mat-icon>shopping_cart</mat-icon>
-                  </button>
-                </div>
-              </div>
-              <div class="p-6">
-                <div class="flex items-center gap-1 mb-2">
-                  @for (star of [1,2,3,4,5]; track star) {
-                    <mat-icon class="text-accent-500 text-sm">star</mat-icon>
-                  }
-                  <span class="text-xs text-neutral-500 ml-1">(48)</span>
-                </div>
-                <h3 class="font-display font-bold text-neutral-900 dark:text-white mb-2 line-clamp-2">
-                  {{ product.name }}
-                </h3>
-                <div class="flex items-center justify-between">
-                  <span class="text-2xl font-bold text-primary-600">{{ product.price }}€</span>
-                  <button class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-semibold">
-                    Ajouter
-                  </button>
-                </div>
-              </div>
-            </div>
-          } @empty {
-            <div class="col-span-full text-center py-16">
-              <mat-icon class="text-6xl text-neutral-300 dark:text-neutral-700 mb-4">inventory_2</mat-icon>
-              <p class="text-neutral-500 dark:text-neutral-400">Aucun produit en vedette pour le moment</p>
-            </div>
-          }
-        </div>
+        <app-product-grid
+          [products]="(featuredProducts$ | async) || []"
+          [title]="'Produits en Vedette'"
+          [subtitle]="'Découvrez nos meubles tunisiens les plus populaires, sélectionnés avec soin pour vous'"
+          [columns]="4"
+          [showArabic]="false"
+          (addToCart)="handleAddToCart($event)"
+          (addToWishlist)="handleAddToWishlist($event)"
+          (quickView)="handleQuickView($event)"
+        />
 
         <div class="text-center mt-12">
           <a routerLink="/products" class="btn-outline">
@@ -264,44 +231,77 @@ import { selectFeaturedProducts } from '../../store/selectors/product.selectors'
 })
 export class HomeComponent implements OnInit {
   private store = inject(Store);
+  private tunisiaService = inject(TunisiaService);
   
   featuredProducts$ = this.store.select(selectFeaturedProducts);
+  locale: 'fr' | 'ar' = 'fr'; // Can be changed based on user preference
 
   categories = [
-    { name: 'Salon', icon: 'weekend', count: 150, gradient: 'from-primary-500 to-primary-600' },
-    { name: 'Chambre', icon: 'bed', count: 120, gradient: 'from-secondary-500 to-secondary-600' },
-    { name: 'Salle à Manger', icon: 'table_restaurant', count: 85, gradient: 'from-accent-500 to-accent-600' },
-    { name: 'Bureau', icon: 'chair', count: 95, gradient: 'from-primary-600 to-accent-500' }
+    { name: 'Salon', nameAr: 'صالون', icon: 'weekend', count: 45, gradient: 'from-primary-500 to-primary-600' },
+    { name: 'Chambre', nameAr: 'غرفة النوم', icon: 'bed', count: 38, gradient: 'from-secondary-500 to-secondary-600' },
+    { name: 'Salle à Manger', nameAr: 'غرفة الطعام', icon: 'table_restaurant', count: 28, gradient: 'from-accent-500 to-accent-600' },
+    { name: 'Cuisine', nameAr: 'مطبخ', icon: 'countertops', count: 22, gradient: 'from-orange-500 to-red-500' },
+    { name: 'Bureau', nameAr: 'مكتب', icon: 'chair', count: 18, gradient: 'from-blue-500 to-indigo-500' },
+    { name: 'Décoration', nameAr: 'ديكور', icon: 'palette', count: 35, gradient: 'from-purple-500 to-pink-500' }
   ];
 
   features = [
     {
       icon: 'local_shipping',
-      title: 'Livraison Gratuite',
-      description: 'Profitez de la livraison gratuite sur toutes vos commandes',
+      title: 'Livraison Tunisie',
+      titleAr: 'توصيل في تونس',
+      description: 'Livraison dans les 24 gouvernorats. Gratuite > 200 TND',
+      descriptionAr: 'توصيل في 24 ولاية. مجاني فوق 200 دينار',
       color: 'from-green-500 to-green-600'
     },
     {
-      icon: 'verified_user',
-      title: 'Paiement Sécurisé',
-      description: 'Transactions 100% sécurisées avec cryptage SSL',
+      icon: 'payments',
+      title: 'Paiement Flexible',
+      titleAr: 'دفع مرن',
+      description: 'D17, Konnect, Flouci ou paiement à la livraison',
+      descriptionAr: 'D17، كونكت، فلوسي أو الدفع عند الاستلام',
       color: 'from-blue-500 to-blue-600'
     },
     {
-      icon: 'schedule',
-      title: 'Support 24/7',
-      description: 'Notre équipe est disponible pour vous aider à tout moment',
+      icon: 'support_agent',
+      title: 'Support Local',
+      titleAr: 'دعم محلي',
+      description: 'Équipe tunisienne disponible pour vous assister',
+      descriptionAr: 'فريق تونسي متاح لمساعدتك',
       color: 'from-purple-500 to-purple-600'
     },
     {
-      icon: 'workspace_premium',
-      title: 'Garantie Qualité',
-      description: 'Garantie 5 ans sur tous nos produits',
+      icon: 'verified',
+      title: 'Qualité Tunisienne',
+      titleAr: 'جودة تونسية',
+      description: 'Produits fabriqués localement avec garantie',
+      descriptionAr: 'منتجات محلية مع ضمان',
       color: 'from-primary-500 to-primary-600'
     }
   ];
 
   ngOnInit() {
     this.store.dispatch(loadFeaturedProducts());
+  }
+
+  calculateDiscount(price: number, discountPrice: number): number {
+    return Math.round(((price - discountPrice) / price) * 100);
+  }
+
+  formatPrice(price: number): string {
+    return this.tunisiaService.formatTND(price);
+  }
+
+  handleAddToCart(product: TunisiaProduct): void {
+    this.store.dispatch(addToCart({ product, quantity: 1 }));
+  }
+
+  handleAddToWishlist(product: TunisiaProduct): void {
+    this.store.dispatch(toggleWishlist({ product }));
+  }
+
+  handleQuickView(product: TunisiaProduct): void {
+    // Naviger vers la page détail
+    window.location.href = `/products/${product.id}`;
   }
 }

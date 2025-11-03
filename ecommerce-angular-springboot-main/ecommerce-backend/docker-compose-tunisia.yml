@@ -1,0 +1,125 @@
+version: '3.8'
+
+services:
+  # PostgreSQL 18 - Base de données principale
+  postgres:
+    image: postgres:18-alpine
+    container_name: ecommerce-postgres-tn
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres_secure_2024}
+      POSTGRES_DB: postgres
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=fr_TN.UTF-8"
+      TZ: Africa/Tunis
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_tn_data:/var/lib/postgresql/data
+      - ../migration/init-databases-tn.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ../migration/tunisia-schema.sql:/docker-entrypoint-initdb.d/02-schema.sql
+      - ../migration/tunisia-data.sql:/docker-entrypoint-initdb.d/03-data.sql
+      - ../config/postgresql.conf:/etc/postgresql/postgresql.conf
+    command: 
+      - "postgres"
+      - "-c"
+      - "config_file=/etc/postgresql/postgresql.conf"
+    networks:
+      - ecommerce-tn-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Redis 7 - Cache et sessions
+  redis:
+    image: redis:7-alpine
+    container_name: ecommerce-redis-tn
+    restart: unless-stopped
+    environment:
+      TZ: Africa/Tunis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_tn_data:/data
+      - ../config/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - ecommerce-tn-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # PgAdmin 4 - Administration PostgreSQL
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: ecommerce-pgadmin-tn
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@maisontn.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin123}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      TZ: Africa/Tunis
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_tn_data:/var/lib/pgadmin
+    networks:
+      - ecommerce-tn-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Adminer - Alternative légère à PgAdmin
+  adminer:
+    image: adminer:latest
+    container_name: ecommerce-adminer-tn
+    restart: unless-stopped
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+      TZ: Africa/Tunis
+    ports:
+      - "8090:8080"
+    networks:
+      - ecommerce-tn-network
+    depends_on:
+      - postgres
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+volumes:
+  postgres_tn_data:
+    driver: local
+    name: ecommerce_postgres_tn_data
+  redis_tn_data:
+    driver: local
+    name: ecommerce_redis_tn_data
+  pgadmin_tn_data:
+    driver: local
+    name: ecommerce_pgadmin_tn_data
+
+networks:
+  ecommerce-tn-network:
+    driver: bridge
+    name: ecommerce-tn-network
