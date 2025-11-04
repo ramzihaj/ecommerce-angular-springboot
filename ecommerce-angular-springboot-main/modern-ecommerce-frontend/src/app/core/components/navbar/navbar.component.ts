@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
 import { ThemeService } from '../../services/theme.service';
 import { Store } from '@ngrx/store';
 import { selectCartItemCount } from '../../../store/selectors/cart.selectors';
@@ -20,7 +21,8 @@ import { selectCartItemCount } from '../../../store/selectors/cart.selectors';
     MatButtonModule,
     MatIconModule,
     MatBadgeModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDividerModule
   ],
   template: `
     <nav class="sticky top-0 z-50 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md shadow-elegant transition-all duration-300">
@@ -34,7 +36,7 @@ import { selectCartItemCount } from '../../../store/selectors/cart.selectors';
               </svg>
             </div>
             <div class="hidden md:block">
-              <h1 class="text-2xl font-display font-bold text-gradient">VibrantKraft</h1>
+              <h1 class="text-2xl font-display font-bold text-gradient">Darna</h1>
               <p class="text-xs text-neutral-500 dark:text-neutral-400">Mobilier Moderne</p>
             </div>
           </a>
@@ -56,26 +58,31 @@ import { selectCartItemCount } from '../../../store/selectors/cart.selectors';
               <mat-icon class="text-sm">expand_more</mat-icon>
             </button>
             <mat-menu #categoriesMenu="matMenu" class="mt-2">
-              <button mat-menu-item class="font-medium">
+              <a mat-menu-item routerLink="/categories" class="font-medium">
+                <mat-icon class="text-primary-600">grid_view</mat-icon>
+                <span>Toutes les catégories</span>
+              </a>
+              <mat-divider></mat-divider>
+              <a mat-menu-item [routerLink]="['/products']" [queryParams]="{category: 1}" class="font-medium">
                 <mat-icon class="text-primary-600">weekend</mat-icon>
                 <span>Canapés & Fauteuils</span>
-              </button>
-              <button mat-menu-item class="font-medium">
+              </a>
+              <a mat-menu-item [routerLink]="['/products']" [queryParams]="{category: 2}" class="font-medium">
                 <mat-icon class="text-primary-600">bed</mat-icon>
                 <span>Chambres</span>
-              </button>
-              <button mat-menu-item class="font-medium">
+              </a>
+              <a mat-menu-item [routerLink]="['/products']" [queryParams]="{category: 3}" class="font-medium">
                 <mat-icon class="text-primary-600">table_restaurant</mat-icon>
                 <span>Salles à manger</span>
-              </button>
-              <button mat-menu-item class="font-medium">
+              </a>
+              <a mat-menu-item [routerLink]="['/products']" [queryParams]="{category: 4}" class="font-medium">
                 <mat-icon class="text-primary-600">chair</mat-icon>
                 <span>Bureaux</span>
-              </button>
-              <button mat-menu-item class="font-medium">
+              </a>
+              <a mat-menu-item [routerLink]="['/products']" [queryParams]="{category: 5}" class="font-medium">
                 <mat-icon class="text-primary-600">light</mat-icon>
                 <span>Éclairages</span>
-              </button>
+              </a>
             </mat-menu>
 
             <a routerLink="/about" routerLinkActive="active"
@@ -138,6 +145,10 @@ import { selectCartItemCount } from '../../../store/selectors/cart.selectors';
               <a routerLink="/products" (click)="closeMobileMenu()"
                  class="px-4 py-3 rounded-lg text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 font-medium transition-colors">
                 Produits
+              </a>
+              <a routerLink="/categories" (click)="closeMobileMenu()"
+                 class="px-4 py-3 rounded-lg text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 font-medium transition-colors">
+                Catégories
               </a>
               <a routerLink="/about" (click)="closeMobileMenu()"
                  class="px-4 py-3 rounded-lg text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 font-medium transition-colors">

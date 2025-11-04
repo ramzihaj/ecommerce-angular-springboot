@@ -68,6 +68,28 @@ VALUES
 (3, 3, 5, 'Perfect for work', 'MacBook Pro 16" is perfect for video editing and development', true, 20, NOW(), NOW()),
 (5, 2, 5, 'Best headphones', 'Sony WH-1000XM5 has the best noise cancellation', true, 25, NOW(), NOW());
 
+-- Contenu statique (About, etc.)
+INSERT INTO contents (key, title, content, content_ar, meta_title, meta_description, is_active, created_at, updated_at)
+VALUES 
+('about', 
+ 'À Propos de Darna', 
+ 'Darna est votre destination pour du mobilier tunisien de qualité, alliant tradition et modernité. Depuis notre création, nous nous engageons à proposer des meubles tunisiens de haute qualité, fabriqués localement par des artisans passionnés. Notre mission est de transformer votre maison en un espace de vie exceptionnel.\n\nChaque pièce de notre collection est soigneusement sélectionnée pour son design, sa qualité et son confort. Nous travaillons avec des fabricants tunisiens renommés pour vous offrir le meilleur du savoir-faire local.\n\nNous soutenons l''économie locale et valorisons le savoir-faire tunisien. Tous nos produits sont fabriqués en Tunisie par des artisans locaux, avec des matériaux de qualité et un contrôle rigoureux.',
+ 'دارنا هي وجهتك للأثاث التونسي الجيد، الذي يجمع بين التقاليد والحداثة. منذ إنشائنا، التزمنا بتقديم أثاث تونسي عالي الجودة، مصنوع محليًا من قبل حرفيين متحمسين. مهمتنا هي تحويل منزلك إلى مساحة معيشية استثنائية.',
+ 'À Propos de Darna - Mobilier Tunisien de Qualité',
+ 'Découvrez Darna, votre spécialiste du mobilier tunisien. Meubles fabriqués en Tunisie par des artisans locaux avec garantie 5 ans.',
+ true,
+ NOW(),
+ NOW()),
+('contact', 
+ 'Contactez-nous', 
+ 'Notre équipe est à votre disposition pour répondre à toutes vos questions. N''hésitez pas à nous contacter par téléphone, email ou via notre formulaire de contact.\n\nAdresse: Tunis, Tunisie\nTéléphone: +216 XX XXX XXX\nEmail: contact@darna.tn\nHoraires: Lun-Sam: 9h-18h',
+ 'فريقنا تحت تصرفكم للإجابة على جميع أسئلتك. لا تتردد في الاتصال بنا عبر الهاتف أو البريد الإلكتروني أو من خلال نموذج الاتصال الخاص بنا.',
+ 'Contactez Darna',
+ 'Contactez notre équipe pour toute question sur nos produits et services.',
+ true,
+ NOW(),
+ NOW());
+
 -- ========================================
 -- BASE: ecommerce_orders
 -- ========================================
@@ -90,9 +112,17 @@ VALUES
 -- ========================================
 -- Statistiques
 -- ========================================
+\c ecommerce_products;
 SELECT 'Test Data Created Successfully!' as status;
+
+\c ecommerce_users;
 SELECT 'Users:', COUNT(*) FROM users;
+
+\c ecommerce_products;
 SELECT 'Categories:', COUNT(*) FROM category;
 SELECT 'Products:', COUNT(*) FROM product;
 SELECT 'Reviews:', COUNT(*) FROM review;
+SELECT 'Contents:', COUNT(*) FROM contents;
+
+\c ecommerce_orders;
 SELECT 'Orders:', COUNT(*) FROM "order";
