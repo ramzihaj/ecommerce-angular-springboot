@@ -47,4 +47,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     
     @Query("SELECT p FROM Product p WHERE p.stockQuantity > 0 ORDER BY p.createdAt DESC")
     List<Product> findNewArrivals(Pageable pageable);
+    
+    // Statistics methods
+    Long countByActiveTrue();
+    
+    Long countByStockQuantityLessThanEqual(Integer quantity);
+    
+    Long countByFeaturedTrue();
+    
+    Long countByNewArrivalTrue();
 }
