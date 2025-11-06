@@ -42,6 +42,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/about/about.component').then(m => m.AboutComponent)
   },
   {
+    path: 'tunisia-info',
+    loadComponent: () => import('./features/tunisia-info/tunisia-info.component').then(m => m.TunisiaInfoComponent)
+  },
+  {
     path: '**',
     redirectTo: ''
   }

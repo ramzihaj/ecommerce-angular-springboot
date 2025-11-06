@@ -10,6 +10,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { ThemeService } from '../../services/theme.service';
 import { Store } from '@ngrx/store';
 import { selectCartItemCount } from '../../../store/selectors/cart.selectors';
+import { selectWishlistCount } from '../../../store/selectors/wishlist.selectors';
 
 @Component({
   selector: 'app-navbar',
@@ -85,6 +86,11 @@ import { selectCartItemCount } from '../../../store/selectors/cart.selectors';
               </a>
             </mat-menu>
 
+            <a routerLink="/tunisia-info" routerLinkActive="active"
+               class="nav-link px-4 py-2 rounded-lg text-neutral-700 dark:text-neutral-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-all duration-300 flex items-center gap-1">
+              🇹🇳 Livraison TN
+            </a>
+            
             <a routerLink="/about" routerLinkActive="active"
                class="nav-link px-4 py-2 rounded-lg text-neutral-700 dark:text-neutral-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-all duration-300">
               À propos
@@ -104,6 +110,16 @@ import { selectCartItemCount } from '../../../store/selectors/cart.selectors';
               <mat-icon class="text-neutral-600 dark:text-neutral-400">
                 {{ isDarkMode() ? 'light_mode' : 'dark_mode' }}
               </mat-icon>
+            </button>
+
+            <!-- Wishlist -->
+            <button class="relative p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
+              <mat-icon class="text-neutral-600 dark:text-neutral-400">favorite_border</mat-icon>
+              @if ((wishlistCount$ | async) ?? 0 > 0) {
+                <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                  {{ wishlistCount$ | async }}
+                </span>
+              }
             </button>
 
             <!-- Cart -->
@@ -150,6 +166,10 @@ import { selectCartItemCount } from '../../../store/selectors/cart.selectors';
                  class="px-4 py-3 rounded-lg text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 font-medium transition-colors">
                 Catégories
               </a>
+              <a routerLink="/tunisia-info" (click)="closeMobileMenu()"
+                 class="px-4 py-3 rounded-lg text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 font-medium transition-colors">
+                🇹🇳 Livraison en Tunisie
+              </a>
               <a routerLink="/about" (click)="closeMobileMenu()"
                  class="px-4 py-3 rounded-lg text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 font-medium transition-colors">
                 À propos
@@ -177,6 +197,7 @@ export class NavbarComponent {
   private store = inject(Store);
   
   cartCount$ = this.store.select(selectCartItemCount);
+  wishlistCount$ = this.store.select(selectWishlistCount);
   isDarkMode = this.themeService.isDarkMode;
   isMobileMenuOpen = signal(false);
 
