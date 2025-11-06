@@ -49,11 +49,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findNewArrivals(Pageable pageable);
     
     // Statistics methods
-    Long countByActiveTrue();
+    // Long countByActiveTrue(); // Commenté - BaseEntity n'a pas active
     
     Long countByStockQuantityLessThanEqual(Integer quantity);
     
-    Long countByFeaturedTrue();
+    Long countByIsFeaturedTrue();
     
-    Long countByNewArrivalTrue();
+    // Long countByNewArrivalTrue(); // Commenté - newArrival n'existe pas dans Product
 }

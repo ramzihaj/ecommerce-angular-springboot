@@ -6,20 +6,11 @@ FROM maven:3.9-eclipse-temurin-21-alpine AS build
 
 WORKDIR /build
 
-# Copier le pom parent
-COPY pom.xml .
+# Copier TOUT le projet
+COPY . .
 
-# Copier et builder le module common d'abord
-COPY common/pom.xml ./common/pom.xml
-COPY common/src ./common/src
-RUN cd common && mvn clean install -DskipTests -B
-
-# Copier le module product-service
-COPY product-service/pom.xml ./product-service/pom.xml
-COPY product-service/src ./product-service/src
-
-# Build le product-service
-RUN cd product-service && mvn clean package -DskipTests -B
+# Builder uniquement jusqu'au product-service (éviter payment-service qui n'a pas de main class)
+RUN mvn clean package -DskipTests -B -pl common,product-service -am
 
 # Stage de production
 FROM eclipse-temurin:21-jre-alpine

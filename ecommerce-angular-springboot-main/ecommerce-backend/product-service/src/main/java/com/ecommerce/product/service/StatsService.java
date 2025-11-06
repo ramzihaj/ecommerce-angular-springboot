@@ -23,11 +23,11 @@ public class StatsService {
         log.info("Calculating dashboard statistics");
         
         Long totalProducts = productRepository.count();
-        Long activeProducts = productRepository.countByActiveTrue();
+        Long activeProducts = totalProducts; // Tous les produits sont actifs par défaut
         Long totalCategories = categoryRepository.count();
         Long outOfStockProducts = productRepository.countByStockQuantityLessThanEqual(0);
-        Long featuredProducts = productRepository.countByFeaturedTrue();
-        Long newArrivals = productRepository.countByNewArrivalTrue();
+        Long featuredProducts = productRepository.countByIsFeaturedTrue();
+        Long newArrivals = 0L; // TODO: Implémenter logique basée sur createdAt
         
         // Calculate average price
         Double averagePrice = productRepository.findAll()
