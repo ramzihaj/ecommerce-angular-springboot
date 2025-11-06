@@ -1,26 +1,47 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay, map, catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 import { TunisiaProduct, MOCK_TUNISIA_PRODUCTS } from '../models/tunisia-product.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
+  private http = inject(HttpClient);
+  private apiUrl = environment.apiUrl;
+  private useMockData = environment.useMockData ?? true;
   
   /**
    * Récupère tous les produits
    */
   getAllProducts(): Observable<TunisiaProduct[]> {
-    return of(MOCK_TUNISIA_PRODUCTS).pipe(delay(300));
+    if (this.useMockData) {
+      return of(MOCK_TUNISIA_PRODUCTS).pipe(delay(300));
+    }
+    return this.http.get<TunisiaProduct[]>(`${this.apiUrl}/products`).pipe(
+      catchError(() => {
+        console.warn('API error, falling back to mock data');
+        return of(MOCK_TUNISIA_PRODUCTS);
+      })
+    );
   }
 
   /**
    * Récupère les produits en vedette
    */
   getFeaturedProducts(): Observable<TunisiaProduct[]> {
-    const featured = MOCK_TUNISIA_PRODUCTS.filter(p => p.featured);
-    return of(featured).pipe(delay(300));
+    if (this.useMockData) {
+      const featured = MOCK_TUNISIA_PRODUCTS.filter(p => p.featured);
+      return of(featured).pipe(delay(300));
+    }
+    return this.http.get<TunisiaProduct[]>(`${this.apiUrl}/products/featured`).pipe(
+      catchError(() => {
+        const featured = MOCK_TUNISIA_PRODUCTS.filter(p => p.featured);
+        return of(featured);
+      })
+    );
   }
 
   /**
@@ -51,8 +72,16 @@ export class ProductService {
    * Récupère un produit par ID
    */
   getProductById(id: number): Observable<TunisiaProduct | undefined> {
-    const product = MOCK_TUNISIA_PRODUCTS.find(p => p.id === id);
-    return of(product).pipe(delay(300));
+    if (this.useMockData) {
+      const product = MOCK_TUNISIA_PRODUCTS.find(p => p.id === id);
+      return of(product).pipe(delay(300));
+    }
+    return this.http.get<TunisiaProduct>(`${this.apiUrl}/products/${id}`).pipe(
+      catchError(() => {
+        const product = MOCK_TUNISIA_PRODUCTS.find(p => p.id === id);
+        return of(product);
+      })
+    );
   }
 
   /**

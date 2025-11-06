@@ -1,21 +1,25 @@
 # Multi-stage build pour Product Service
+# NOTE: Ce Dockerfile doit être exécuté depuis le dossier ecommerce-backend (parent)
+# docker build -f product-service/Dockerfile -t product-service .
+
 FROM maven:3.9-eclipse-temurin-21-alpine AS build
 
-WORKDIR /app
+WORKDIR /build
 
-# Copier les fichiers Maven
+# Copier le pom parent
 COPY pom.xml .
-COPY ../common/pom.xml ../common/pom.xml
-COPY ../common/src ../common/src
 
-# Télécharger les dépendances
-RUN mvn dependency:go-offline -B
+# Copier et builder le module common d'abord
+COPY common/pom.xml ./common/pom.xml
+COPY common/src ./common/src
+RUN cd common && mvn clean install -DskipTests -B
 
-# Copier le code source
-COPY src ./src
+# Copier le module product-service
+COPY product-service/pom.xml ./product-service/pom.xml
+COPY product-service/src ./product-service/src
 
-# Build l'application
-RUN mvn clean package -DskipTests -B
+# Build le product-service
+RUN cd product-service && mvn clean package -DskipTests -B
 
 # Stage de production
 FROM eclipse-temurin:21-jre-alpine
@@ -30,7 +34,7 @@ RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 
 # Copier le JAR depuis le stage de build
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /build/product-service/target/*.jar app.jar
 
 # Exposer le port
 EXPOSE 8081

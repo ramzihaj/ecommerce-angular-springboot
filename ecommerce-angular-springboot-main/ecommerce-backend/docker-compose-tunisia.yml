@@ -111,15 +111,15 @@ services:
   # Product Service - Service des produits
   product-service:
     build:
-      context: ./product-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: product-service/Dockerfile
     container_name: ecommerce-product-service-tn
     restart: unless-stopped
     environment:
       SPRING_PROFILES_ACTIVE: tunisia
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ecommerce_tunisia_db
-      SPRING_DATASOURCE_USERNAME: ${DB_USER:-ecommerce_tunisia_user}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-tunisia_secure_2024}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-postgres_secure_2024}
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
       SERVER_PORT: 8081
@@ -138,42 +138,42 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
+      start_period: 60s
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
 
-  # Gateway - API Gateway
-  gateway:
-    build:
-      context: ./gateway
-      dockerfile: Dockerfile
-    container_name: ecommerce-gateway-tn
-    restart: unless-stopped
-    environment:
-      SPRING_PROFILES_ACTIVE: tunisia
-      PRODUCT_SERVICE_URL: http://product-service:8081
-      SERVER_PORT: 8080
-      TZ: Africa/Tunis
-    ports:
-      - "8080:8080"
-    networks:
-      - ecommerce-tn-network
-    depends_on:
-      - product-service
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+  # Gateway - API Gateway (Commenté pour l'instant - à activer après)
+  # gateway:
+  #   build:
+  #     context: .
+  #     dockerfile: gateway/Dockerfile
+  #   container_name: ecommerce-gateway-tn
+  #   restart: unless-stopped
+  #   environment:
+  #     SPRING_PROFILES_ACTIVE: tunisia
+  #     PRODUCT_SERVICE_URL: http://product-service:8081
+  #     SERVER_PORT: 8080
+  #     TZ: Africa/Tunis
+  #   ports:
+  #     - "8080:8080"
+  #   networks:
+  #     - ecommerce-tn-network
+  #   depends_on:
+  #     - product-service
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 40s
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
 
 volumes:
   postgres_tn_data:
