@@ -20,12 +20,44 @@ export class ProductService {
     if (this.useMockData) {
       return of(MOCK_TUNISIA_PRODUCTS).pipe(delay(300));
     }
-    return this.http.get<TunisiaProduct[]>(`${this.apiUrl}/products`).pipe(
-      catchError(() => {
-        console.warn('API error, falling back to mock data');
+    return this.http.get<any>(`${this.apiUrl}/products`).pipe(
+      map(response => {
+        // L'API renvoie { success, message, data: { content: [], ... } }
+        const products = response?.data?.content || [];
+        return products.map((p: any) => this.mapBackendProduct(p));
+      }),
+      catchError(error => {
+        console.warn('API error, falling back to mock data', error);
         return of(MOCK_TUNISIA_PRODUCTS);
       })
     );
+  }
+
+  /**
+   * Mappe un produit du backend vers le modèle frontend
+   */
+  private mapBackendProduct(backendProduct: any): TunisiaProduct {
+    return {
+      id: backendProduct.id,
+      name: backendProduct.name,
+      description: backendProduct.description || '',
+      price: backendProduct.price,
+      discountPrice: backendProduct.discountPrice,
+      stockQuantity: backendProduct.stockQuantity || 0,
+      categoryId: backendProduct.categoryId || 0,
+      categoryName: backendProduct.categoryName,
+      brand: backendProduct.brand,
+      sku: backendProduct.sku || '',
+      imageUrl: backendProduct.imageUrls?.[0] || '',
+      images: backendProduct.imageUrls || [],
+      featured: backendProduct.isFeatured || false,
+      newArrival: false,
+      bestSeller: false,
+      madeInTunisia: true,
+      active: true,
+      rating: backendProduct.averageRating,
+      reviewCount: backendProduct.reviewCount
+    };
   }
 
   /**
@@ -76,7 +108,11 @@ export class ProductService {
       const product = MOCK_TUNISIA_PRODUCTS.find(p => p.id === id);
       return of(product).pipe(delay(300));
     }
-    return this.http.get<TunisiaProduct>(`${this.apiUrl}/products/${id}`).pipe(
+    return this.http.get<any>(`${this.apiUrl}/products/${id}`).pipe(
+      map(response => {
+        const product = response?.data;
+        return product ? this.mapBackendProduct(product) : undefined;
+      }),
       catchError(() => {
         const product = MOCK_TUNISIA_PRODUCTS.find(p => p.id === id);
         return of(product);
