@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,6 +19,7 @@ import { selectWishlistCount } from '../../../store/selectors/wishlist.selectors
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
@@ -100,9 +102,31 @@ import { selectWishlistCount } from '../../../store/selectors/wishlist.selectors
           <!-- Actions -->
           <div class="flex items-center gap-2">
             <!-- Search -->
-            <button class="hidden md:flex p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
-              <mat-icon class="text-neutral-600 dark:text-neutral-400">search</mat-icon>
-            </button>
+            <div class="hidden md:flex items-center gap-2">
+              @if (isSearchOpen()) {
+                <div class="flex items-center gap-2 animate-slide-right">
+                  <input
+                    #searchInput
+                    type="text"
+                    [(ngModel)]="searchQuery"
+                    (keyup.enter)="onSearch()"
+                    placeholder="Rechercher un produit..."
+                    class="w-64 px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all"
+                    autofocus
+                  />
+                  <button (click)="onSearch()" class="p-2 rounded-lg bg-primary-600 hover:bg-primary-700 transition-colors">
+                    <mat-icon class="text-white">search</mat-icon>
+                  </button>
+                  <button (click)="toggleSearch()" class="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
+                    <mat-icon class="text-neutral-600 dark:text-neutral-400">close</mat-icon>
+                  </button>
+                </div>
+              } @else {
+                <button (click)="toggleSearch()" class="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
+                  <mat-icon class="text-neutral-600 dark:text-neutral-400">search</mat-icon>
+                </button>
+              }
+            </div>
 
             <!-- Theme Toggle -->
             <button (click)="toggleTheme()" 
@@ -113,14 +137,14 @@ import { selectWishlistCount } from '../../../store/selectors/wishlist.selectors
             </button>
 
             <!-- Wishlist -->
-            <button class="relative p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
+            <a routerLink="/wishlist" class="relative p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
               <mat-icon class="text-neutral-600 dark:text-neutral-400">favorite_border</mat-icon>
               @if ((wishlistCount$ | async) ?? 0 > 0) {
                 <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
                   {{ wishlistCount$ | async }}
                 </span>
               }
-            </button>
+            </a>
 
             <!-- Cart -->
             <a routerLink="/cart" 
@@ -195,11 +219,14 @@ import { selectWishlistCount } from '../../../store/selectors/wishlist.selectors
 export class NavbarComponent {
   private themeService = inject(ThemeService);
   private store = inject(Store);
+  private router = inject(Router);
   
   cartCount$ = this.store.select(selectCartItemCount);
   wishlistCount$ = this.store.select(selectWishlistCount);
   isDarkMode = this.themeService.isDarkMode;
   isMobileMenuOpen = signal(false);
+  isSearchOpen = signal(false);
+  searchQuery = '';
 
   toggleTheme() {
     this.themeService.toggleTheme();
@@ -211,5 +238,22 @@ export class NavbarComponent {
 
   closeMobileMenu() {
     this.isMobileMenuOpen.set(false);
+  }
+
+  toggleSearch() {
+    this.isSearchOpen.update(value => !value);
+    if (!this.isSearchOpen()) {
+      this.searchQuery = '';
+    }
+  }
+
+  onSearch() {
+    if (this.searchQuery.trim()) {
+      this.router.navigate(['/products'], {
+        queryParams: { search: this.searchQuery.trim() }
+      });
+      this.isSearchOpen.set(false);
+      this.searchQuery = '';
+    }
   }
 }
