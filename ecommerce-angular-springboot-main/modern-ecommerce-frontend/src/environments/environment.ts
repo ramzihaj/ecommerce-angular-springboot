@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8081', // Product Service direct (pas de Gateway pour l'instant)
+  apiUrl: 'http://localhost:8081/api', // Product Service API endpoint
   wsUrl: 'ws://localhost:8085/ws',
-  useMockData: false // Désactiver les données mockées
+  useMockData: false // Utiliser l'API réelle
 };
