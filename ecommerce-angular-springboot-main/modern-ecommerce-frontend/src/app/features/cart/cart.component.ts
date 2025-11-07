@@ -53,7 +53,7 @@ import { MatButtonModule } from '@angular/material/button';
                   <div class="flex gap-6">
                     <!-- Product Image -->
                     <div class="flex-shrink-0">
-                      <img [src]="item.product.imageUrls?.[0] || 'assets/placeholder.jpg'" 
+                      <img [src]="item.product.imageUrl || item.product.images?.[0] || 'assets/placeholder.jpg'" 
                            [alt]="item.product.name"
                            class="w-32 h-32 object-cover rounded-xl" />
                     </div>

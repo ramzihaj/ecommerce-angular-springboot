@@ -51,7 +51,7 @@ import { MatButtonModule } from '@angular/material/button';
               <div class="bg-white dark:bg-neutral-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group">
                 <!-- Product Image -->
                 <div class="relative aspect-square overflow-hidden bg-neutral-100 dark:bg-neutral-700">
-                  <img [src]="product.imageUrls?.[0] || 'assets/placeholder.jpg'" 
+                  <img [src]="product.imageUrl || product.images?.[0] || 'assets/placeholder.jpg'" 
                        [alt]="product.name"
                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   
@@ -63,12 +63,12 @@ import { MatButtonModule } from '@angular/material/button';
 
                   <!-- Badges -->
                   <div class="absolute top-3 left-3 flex flex-col gap-2">
-                    @if (product.discountPercent && product.discountPercent > 0) {
+                    @if (product.discountPrice && product.discountPrice < product.price) {
                       <span class="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded-full">
-                        -{{ product.discountPercent }}%
+                        -{{ getDiscountPercent(product) }}%
                       </span>
                     }
-                    @if (product.isFeatured) {
+                    @if (product.featured) {
                       <span class="px-3 py-1 bg-amber-500 text-white text-xs font-bold rounded-full">
                         ⭐ Vedette
                       </span>
@@ -86,12 +86,12 @@ import { MatButtonModule } from '@angular/material/button';
                   </p>
 
                   <!-- Rating -->
-                  @if (product.averageRating) {
+                  @if (product.rating) {
                     <div class="flex items-center gap-2 mb-3">
                       <div class="flex items-center gap-1">
                         @for (star of [1,2,3,4,5]; track star) {
                           <mat-icon class="text-amber-400 !text-base">
-                            {{ star <= product.averageRating! ? 'star' : 'star_border' }}
+                            {{ star <= product.rating! ? 'star' : 'star_border' }}
                           </mat-icon>
                         }
                       </div>
@@ -165,5 +165,12 @@ export class WishlistComponent {
     if (product.stockQuantity > 0) {
       this.store.dispatch(addToCart({ product, quantity: 1 }));
     }
+  }
+
+  getDiscountPercent(product: any): number {
+    if (product.discountPrice && product.price) {
+      return Math.round(((product.price - product.discountPrice) / product.price) * 100);
+    }
+    return 0;
   }
 }
